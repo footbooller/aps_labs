@@ -112,10 +112,10 @@ module lsu(
             LDST_H: begin
                 case(core_addr_i[1])
                     1'b0: begin
-                        core_rd_o =  {16'b0, mem_rd_i[15:0]};
+                        core_rd_o =  {{16{mem_rd_i[15]}}, mem_rd_i[15:0]};
                     end
                     1'b1: begin
-                        core_rd_o =  {16'b0, mem_rd_i[31:16]};
+                        core_rd_o =  {{16{mem_rd_i[31]}}, mem_rd_i[31:16]};
                     end
                     default: core_rd_o = 32'b0;
                 endcase
@@ -164,6 +164,6 @@ module lsu(
         end
     end
 
-    assign core_stall_o = core_req_i && (!stall_reg || !mem_ready_i);
+    assign core_stall_o = core_req_i && !(stall_reg && mem_ready_i);
 
 endmodule
